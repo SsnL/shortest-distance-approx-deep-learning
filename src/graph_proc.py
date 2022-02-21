@@ -15,7 +15,7 @@ from scipy import io
 import numpy as np
 import os
 from tqdm.auto import tqdm
-from src.logger import Logger
+from logger import Logger
 import pickle
 import time
 import datetime
@@ -47,7 +47,7 @@ class Graph:
             self.graph_sparse = io.mmread(
                 mtx_file_path).tocsr()  # scipy sparse csr matrix
         else:
-            self.graph_sparse = scipy.sparse.csr_matrix((nx_graph.number_of_nodes(), 
+            self.graph_sparse = scipy.sparse.csr_matrix((nx_graph.number_of_nodes(),
                                                   nx_graph.number_of_nodes()), dtype=np.int8)
             for adj_tup in nx_graph.adjacency():
                 source = adj_tup[0]
@@ -136,7 +136,7 @@ class Graph:
                             'distance updated for node-{}'.format(str(neighbour)))
                 while len(self.pq_nodes):
                     heapq.heappop(self.pq_nodes)
-                
+
                 self.pq_nodes = [(dist, id) for id, dist in enumerate(self.distances) if not self.visited[id]]
                 heapq.heapify(self.pq_nodes)
                 pbar.update(1)
@@ -155,7 +155,7 @@ class Graph:
         print('number of landmarks:', num_landmarks)
         for landmark in tqdm(landmarks):
             self.calculate_distances_naive(landmark)
-        
+
         save_path = '../outputs/distance_map_' + str(time.time()) + '.pickle'
         print('save path:', save_path)
         pickle.dump(self.distance_map, open(save_path, 'wb'))
